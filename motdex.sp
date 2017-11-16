@@ -30,14 +30,8 @@ public void OnPluginStart()
     if(g_hDatabase == INVALID_HANDLE)
         SetFailState("connect to database failed: %s", error);
     
-    SQL_FastQuery(g_hDatabase, "CREATE TABLE `playertrack_webinterface` ( \
-                                                                          `playerid` int(11) unsigned NOT NULL DEFAULT '0', \
-                                                                          `show` bit(1) NOT NULL DEFAULT b'0', \
-                                                                          `width` smallint(6) NOT NULL DEFAULT '1268', \
-                                                                          `height` smallint(6) unsigned NOT NULL DEFAULT '640', \
-                                                                          `url` varchar(256) NOT NULL DEFAULT 'https://csgogamers.com/', \
-                                                                          PRIMARY KEY (`playerid`) \
-                                                                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+    if(!SQL_FastQuery(g_hDatabase, "CREATE TABLE IF NOT EXISTS `webinterface` ( `playerid` int(11) unsigned NOT NULL DEFAULT '0', `show` bit(1) NOT NULL DEFAULT b'0', `width` smallint(6) NOT NULL DEFAULT '1268', `height` smallint(6) unsigned NOT NULL DEFAULT '640', `url` varchar(256) NOT NULL DEFAULT 'https://csgogamers.com/', PRIMARY KEY (`playerid`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"))
+        SetFailState("Check TABLE failed!");
 }
 
 public int Native_ShowNormalMotd(Handle plugin, int numParams)
