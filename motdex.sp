@@ -6,10 +6,10 @@ ConVar g_cvarWebURL;
 
 public Plugin myinfo = 
 {
-    name        = "MotdEX",
+    name        = "Motd Extended",
     author      = "Kyle",
     description = "",
-    version     = "1.0",
+    version     = "1.1",
     url         = "http://steamcommunity.com/id/_xQy_/"
 };
 
@@ -18,6 +18,8 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
     CreateNative("MotdEx_ShowNormalMotd", Native_ShowNormalMotd);
     CreateNative("MotdEx_ShowHiddenMotd", Native_ShowHiddenMotd);
     CreateNative("MotdEx_RemoveMotd",     Native_RemoveMotd);
+    
+    return APLRes_Success;
 }
 
 public void OnPluginStart()
@@ -32,6 +34,8 @@ public void OnPluginStart()
     
     if(!SQL_FastQuery(g_hDatabase, "CREATE TABLE IF NOT EXISTS `webinterface` ( `playerid` int(11) unsigned NOT NULL DEFAULT '0', `show` bit(1) NOT NULL DEFAULT b'0', `width` smallint(6) NOT NULL DEFAULT '1268', `height` smallint(6) unsigned NOT NULL DEFAULT '640', `url` varchar(256) NOT NULL DEFAULT 'https://csgogamers.com/', PRIMARY KEY (`playerid`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"))
         SetFailState("Check TABLE failed!");
+    
+    RegPluginLibrary("MotdEx");
 }
 
 public int Native_ShowNormalMotd(Handle plugin, int numParams)
